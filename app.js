@@ -1,13 +1,23 @@
 const express = require("express");
-const cors = require("cors"); // Importar o pacote cors
+const cors = require("cors");
+const sequelize = require("./config/database");
 const app = express();
 const movieRoutes = require("./routes/movieRoutes");
 
-app.use(cors()); // Usar o middleware cors
+app.use(cors());
 app.use(express.json());
 app.use("/api", movieRoutes);
 
-const PORT = process.env.PORT || 3001; // Usar a variável de ambiente PORT ou 3001
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+const PORT = process.env.PORT || 3001;
+
+sequelize
+  .sync()
+  .then(() => {
+    console.log("Banco de dados sincronizado");
+    app.listen(PORT, () => {
+      console.log(`Servidor rodando na porta ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error("Erro ao sincronizar o banco de dados:", error);
+  });
