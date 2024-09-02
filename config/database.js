@@ -1,7 +1,17 @@
 const { Sequelize } = require("sequelize");
 
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialect: "mysql", // ou 'sqlite', 'postgres', 'mssql'
+const sequelize = new Sequelize("favoritos", "postgres", "limao123", {
+  host: "localhost",
+  dialect: "postgres",
 });
+
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log("Conexão com o banco de dados estabelecida com sucesso.");
+  })
+  .catch((err) => {
+    console.error("Não foi possível conectar ao banco de dados:", err);
+  });
 
 module.exports = sequelize;
