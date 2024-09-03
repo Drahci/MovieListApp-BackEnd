@@ -20,7 +20,7 @@ const getMovie = async (req, res) => {
   try {
     const { id } = req.params;
     const { data, error } = await supabase
-      .from("movies")
+      .from("favorites")
       .select("*")
       .eq("id", id)
       .single();
@@ -41,7 +41,7 @@ const searchMovies = async (req, res) => {
   try {
     const { query } = req.query;
     const { data, error } = await supabase
-      .from("movies")
+      .from("favorites")
       .select("*")
       .ilike("title", `%${query}%`);
 
@@ -61,7 +61,7 @@ const createMovie = async (req, res) => {
   try {
     const { title, description, release_date } = req.body;
     const { data, error } = await supabase
-      .from("movies")
+      .from("favorites")
       .insert([{ title, description, release_date }]);
 
     if (error) {
@@ -81,7 +81,7 @@ const updateMovie = async (req, res) => {
     const { id } = req.params;
     const { title, description, release_date } = req.body;
     const { data, error } = await supabase
-      .from("movies")
+      .from("favorites")
       .update({ title, description, release_date })
       .eq("id", id);
 
